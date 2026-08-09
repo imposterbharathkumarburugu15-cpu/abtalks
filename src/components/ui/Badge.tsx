@@ -3,7 +3,7 @@ import React from 'react';
 interface BadgeProps {
   children: React.ReactNode;
   variant?: 'purple' | 'amber' | 'emerald' | 'slate' | 'outline';
-  size?: 'sm' | 'md';
+  size?: 'sm' | 'md'; 
   className?: string;
   icon?: React.ReactNode;
 }
