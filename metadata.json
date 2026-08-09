@@ -1,0 +1,6 @@
+{
+  "name": "ABTalks",
+  "description": "60-day mobile-first coding challenge and public proof of work platform for student builders.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
