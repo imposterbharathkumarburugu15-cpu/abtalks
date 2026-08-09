@@ -19,7 +19,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-[#090A0F] text-slate-100 flex flex-col font-sans">
+      <div className="min-h-screen bg-[#090B0D] text-[#F1EEE7] flex flex-col font-sans">
         {/* Persistent App Header */}
         <Header student={student} onStudentUpdate={handleStudentUpdate} />
 

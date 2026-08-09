@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ShieldCheck, Github, Linkedin, Search, ExternalLink, CheckCircle2 } from 'lucide-react';
+import { Github, Linkedin, Search, CheckCircle2 } from 'lucide-react';
 import { StudentProfile, ProofEntry } from '../types';
 
 interface ProofVaultPageProps {
@@ -33,40 +33,40 @@ export const ProofVaultPage: React.FC<ProofVaultPageProps> = ({ student }) => {
         initial={{ scale: 0.98, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.35 }}
-        className="bg-[#050A18] border border-[#1E293B] rounded-2xl p-5 space-y-3 relative overflow-hidden"
+        className="bg-[#14191B] border border-[#252C2E] rounded-xl p-5 space-y-3 relative overflow-hidden"
       >
         <div className="space-y-1">
-          <span className="text-[10px] font-mono font-bold text-[#38BDF8] tracking-widest uppercase block">
+          <span className="text-[10px] font-mono font-bold text-[#69B39A] tracking-widest uppercase block">
             PUBLIC RECORD
           </span>
-          <h1 className="text-xl font-black font-display text-white tracking-tight leading-tight">
+          <h1 className="text-xl font-black font-display text-[#F1EEE7] tracking-tight leading-tight">
             {studentNameUpper}'S BUILD LOG
           </h1>
-          <p className="text-xs font-mono text-[#A78BFA] font-bold">
+          <p className="text-xs font-mono text-[#718A96] font-bold">
             60 BUILDS · 60 DAYS
           </p>
         </div>
 
-        <p className="text-xs text-[#94A3B8] italic font-sans border-t border-[#1E293B] pt-2">
+        <p className="text-xs text-[#A6AAA8] italic font-sans border-t border-[#252C2E] pt-2">
           Your work, preserved.
         </p>
 
         {/* Big Number Editorial Stats */}
         <div className="grid grid-cols-2 gap-3 pt-2">
-          <motion.div whileHover={{ scale: 1.03 }} className="bg-[#0F172A] p-3 rounded-xl border border-[#1E293B]">
-            <span className="text-3xl font-black font-display text-white block tracking-tight">
+          <motion.div whileHover={{ scale: 1.02 }} className="bg-[#090B0D] p-3 rounded-xl border border-[#252C2E]">
+            <span className="text-3xl font-black font-display text-[#F1EEE7] block tracking-tight">
               {student.completedBuilds}
             </span>
-            <span className="text-[9px] font-mono font-bold text-[#64748B] uppercase tracking-wider block mt-0.5">
+            <span className="text-[9px] font-mono font-bold text-[#A6AAA8] uppercase tracking-wider block mt-0.5">
               BUILDS SHIPPED
             </span>
           </motion.div>
 
-          <motion.div whileHover={{ scale: 1.03 }} className="bg-[#0F172A] p-3 rounded-xl border border-[#1E293B]">
-            <span className="text-3xl font-black font-display text-[#F97316] block tracking-tight">
+          <motion.div whileHover={{ scale: 1.02 }} className="bg-[#090B0D] p-3 rounded-xl border border-[#252C2E]">
+            <span className="text-3xl font-black font-display text-[#C58A52] block tracking-tight">
               {student.streak}
             </span>
-            <span className="text-[9px] font-mono font-bold text-[#F97316]/80 uppercase tracking-wider block mt-0.5">
+            <span className="text-[9px] font-mono font-bold text-[#C58A52] uppercase tracking-wider block mt-0.5">
               CURRENT RUN
             </span>
           </motion.div>
@@ -75,22 +75,22 @@ export const ProofVaultPage: React.FC<ProofVaultPageProps> = ({ student }) => {
 
       {/* Search Bar */}
       <div className="relative">
-        <Search className="w-4 h-4 text-[#64748B] absolute left-3 top-1/2 -translate-y-1/2" />
+        <Search className="w-4 h-4 text-[#A6AAA8] absolute left-3 top-1/2 -translate-y-1/2" />
         <input
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search build log..."
-          className="w-full bg-[#050A18] border border-[#1E293B] rounded-xl pl-9 pr-3 py-2 text-xs text-white focus:outline-none focus:border-[#38BDF8] font-mono"
+          className="w-full bg-[#14191B] border border-[#252C2E] rounded-xl pl-9 pr-3 py-2 text-xs text-[#F1EEE7] focus:outline-none focus:border-[#69B39A] font-mono"
         />
       </div>
 
-      <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-[#1E293B] to-transparent my-2" />
+      <div className="w-full h-[1px] bg-[#252C2E] my-2" />
 
       {/* Build Log Entries */}
       <div className="space-y-4">
         {filteredProofs.length === 0 ? (
-          <div className="p-8 text-center text-xs text-[#64748B] bg-[#050A18] border border-dashed border-[#1E293B] rounded-xl">
+          <div className="p-8 text-center text-xs text-[#A6AAA8] bg-[#14191B] border border-dashed border-[#252C2E] rounded-xl">
             No matching builds found in record.
           </div>
         ) : (
@@ -102,49 +102,49 @@ export const ProofVaultPage: React.FC<ProofVaultPageProps> = ({ student }) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.25, delay: idx * 0.05 }}
-                whileHover={{ y: -2, borderColor: 'rgba(139, 92, 246, 0.6)' }}
-                className="bg-[#050A18] border border-[#1E293B] rounded-2xl p-4 space-y-3 transition-all shadow-sm"
+                whileHover={{ y: -2, borderColor: '#69B39A' }}
+                className="bg-[#14191B] border border-[#252C2E] rounded-xl p-4 space-y-3 transition-all"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-black font-mono text-[#38BDF8] uppercase tracking-wider">
+                  <span className="text-xs font-black font-mono text-[#69B39A] uppercase tracking-wider">
                     BUILD {proof.day}
                   </span>
 
-                  <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#064E3B]/40 border border-[#10B981]/50 text-[#34D399] text-[10px] font-mono font-bold">
-                    <CheckCircle2 className="w-3 h-3 text-[#34D399]" />
+                  <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#191F21] border border-[#252C2E] text-[#6FA889] text-[10px] font-mono font-bold">
+                    <CheckCircle2 className="w-3 h-3 text-[#6FA889]" />
                     <span>VERIFIED ✓</span>
                   </div>
                 </div>
 
-                <h3 className="text-sm font-black font-display text-white uppercase tracking-tight leading-snug">
+                <h3 className="text-sm font-black font-display text-[#F1EEE7] uppercase tracking-tight leading-snug">
                   {proof.title}
                 </h3>
 
-                <div className="flex items-center gap-3 pt-2 border-t border-[#1E293B]">
+                <div className="flex items-center gap-3 pt-2 border-t border-[#252C2E]">
                   <a
                     href={proof.githubUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#A78BFA] hover:text-white transition-colors"
+                    className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#69B39A] hover:text-[#F1EEE7] transition-colors"
                   >
                     <Github className="w-3.5 h-3.5" />
                     <span>GitHub ↗</span>
                   </a>
 
-                  <span className="text-[#334155]">•</span>
+                  <span className="text-[#252C2E]">•</span>
 
                   <a
                     href={proof.linkedinUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#38BDF8] hover:text-white transition-colors"
+                    className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#718A96] hover:text-[#F1EEE7] transition-colors"
                   >
                     <Linkedin className="w-3.5 h-3.5" />
                     <span>LinkedIn ↗</span>
                   </a>
                 </div>
 
-                <div className="text-[10px] font-mono text-[#64748B] pt-1">
+                <div className="text-[10px] font-mono text-[#A6AAA8] pt-1">
                   {proof.submittedAt}
                 </div>
               </motion.div>
@@ -155,5 +155,6 @@ export const ProofVaultPage: React.FC<ProofVaultPageProps> = ({ student }) => {
     </motion.div>
   );
 };
+
 
 

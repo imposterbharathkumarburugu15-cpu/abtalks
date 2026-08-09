@@ -15,7 +15,6 @@ export const BuildJourney: React.FC<BuildJourneyProps> = ({ student }) => {
   const totalDays = 60;
   const daysArray = Array.from({ length: totalDays }, (_, i) => i + 1);
 
-  // Filter for mobile window (15 day window around current day, or all 60)
   const displayDays = viewMode === 'current'
     ? daysArray.slice(Math.max(0, student.currentDay - 7), Math.min(60, student.currentDay + 8))
     : daysArray;
@@ -23,29 +22,27 @@ export const BuildJourney: React.FC<BuildJourneyProps> = ({ student }) => {
   const isMissedDayState = student.stateMode === 'missed_day';
 
   return (
-    <section className="bg-card-midnight rounded-2xl p-4 sm:p-5 select-none space-y-3">
-      {/* Editorial Header */}
-      <div className="flex items-center justify-between">
+    <section className="bg-[#14191B] border border-[#252C2E] rounded-xl p-4 sm:p-5 select-none space-y-3 font-sans">
+      <div className="flex items-center justify-between border-b border-[#252C2E] pb-2.5">
         <div>
-          <h3 className="text-sm sm:text-base font-black font-display text-white tracking-tight uppercase">
+          <span className="text-[10px] font-mono font-bold text-[#69B39A] uppercase tracking-widest block">
+            BUILD TRAIL
+          </span>
+          <h3 className="text-xs font-black font-display text-[#F1EEE7] tracking-wider uppercase">
             YOUR 60-DAY JOURNEY
           </h3>
-          <p className="text-xs font-mono font-bold text-[#38BDF8] mt-0.5">
-            {student.completedBuilds} / 60 BUILDS SHIPPED
-          </p>
         </div>
 
         <button
           onClick={() => setViewMode(viewMode === 'current' ? 'all' : 'current')}
-          className="flex items-center gap-1 text-[10px] font-mono font-bold text-[#94A3B8] hover:text-white bg-[#050A18] border border-[#1E293B] px-2.5 py-1 rounded-lg transition-colors cursor-pointer uppercase"
+          className="flex items-center gap-1 text-[10px] font-mono font-bold text-[#A6AAA8] hover:text-[#F1EEE7] bg-[#090B0D] border border-[#252C2E] px-2.5 py-1 rounded-lg transition-colors cursor-pointer uppercase"
         >
-          <Filter className="w-3 h-3 text-[#38BDF8]" />
+          <Filter className="w-3 h-3 text-[#69B39A]" />
           <span>{viewMode === 'current' ? 'ALL 60' : 'ACTIVE'}</span>
         </button>
       </div>
 
-      {/* Signature Connected Build Trail */}
-      <div className="bg-[#050A18] border border-[#1E293B] rounded-xl p-3.5 overflow-x-auto no-scrollbar shadow-inner">
+      <div className="bg-[#090B0D] border border-[#252C2E] rounded-xl p-3.5 overflow-x-auto no-scrollbar">
         <div className="flex items-center min-w-max gap-1 py-1">
           {displayDays.map((day, idx) => {
             const proof = student.proofs[day];
@@ -57,36 +54,34 @@ export const BuildJourney: React.FC<BuildJourneyProps> = ({ student }) => {
 
             return (
               <React.Fragment key={day}>
-                {/* Connecting Trail Line */}
                 {idx > 0 && (
                   <div 
                     className={`h-[2px] w-3.5 transition-colors ${
                       isCompleted 
-                        ? 'bg-gradient-to-r from-[#8B5CF6] to-[#38BDF8]' 
+                        ? 'bg-[#69B39A]' 
                         : isMissed
-                        ? 'bg-[#F97316]/50'
+                        ? 'bg-[#C58A52]/50'
                         : isCurrent 
-                        ? 'bg-gradient-to-r from-[#8B5CF6] to-[#1E293B]' 
-                        : 'bg-[#1E293B]'
+                        ? 'bg-[#69B39A]/50' 
+                        : 'bg-[#252C2E]'
                     }`} 
                   />
                 )}
 
-                {/* Node */}
                 <button
                   onClick={() => setSelectedDay(day)}
                   className={`relative flex items-center justify-center transition-all cursor-pointer group active:scale-95 ${
                     isCurrent 
-                      ? 'w-7 h-7 rounded-full bg-[#8B5CF6] text-white font-black text-xs ring-4 ring-[#8B5CF6]/30 shadow-lg shadow-[#8B5CF6]/40 animate-violet-pulse' 
+                      ? 'w-7 h-7 rounded-full bg-[#69B39A] text-[#090B0D] font-black text-xs ring-4 ring-[#69B39A]/30 shadow-lg' 
                       : isMissed
-                      ? 'w-6 h-6 rounded-full bg-[#050A18] border-2 border-[#F97316] text-[#F97316] text-[10px] font-bold'
+                      ? 'w-6 h-6 rounded-full bg-[#090B0D] border-2 border-[#C58A52] text-[#C58A52] text-[10px] font-bold'
                       : isCoreShipped
-                      ? 'w-6 h-6 rounded-full bg-[#8B5CF6]/20 border border-[#8B5CF6] text-[#A78BFA] text-[10px] font-bold'
+                      ? 'w-6 h-6 rounded-full bg-[#191F21] border border-[#69B39A] text-[#69B39A] text-[10px] font-bold'
                       : isCompleted
-                      ? 'w-6 h-6 rounded-full bg-[#0284C7]/20 border border-[#38BDF8] text-[#38BDF8] text-[10px] font-bold'
-                      : 'w-6 h-6 rounded-full bg-[#0F172A] border border-[#1E293B] text-[#64748B] text-[10px] hover:border-[#38BDF8]/40'
+                      ? 'w-6 h-6 rounded-full bg-[#191F21] border border-[#69B39A] text-[#69B39A] text-[10px] font-bold'
+                      : 'w-6 h-6 rounded-full bg-[#090B0D] border border-[#252C2E] text-[#6F7575] text-[10px] hover:border-[#69B39A]/40'
                   }`}
-                  title={`Day ${day}: ${challenge?.title || 'Challenge'}${isCoreShipped ? ' (Core Shipped)' : ''}${isMissed ? ' (Missed Day)' : ''}`}
+                  title={`Day ${day}: ${challenge?.title || 'Challenge'}`}
                 >
                   {isCurrent ? (
                     <span>◉</span>
@@ -106,20 +101,19 @@ export const BuildJourney: React.FC<BuildJourneyProps> = ({ student }) => {
         </div>
       </div>
 
-      {/* Selected Node Quick Preview Card */}
       {selectedDay && (
-        <div className="p-3 bg-[#050A18] border border-[#1E293B] rounded-xl flex items-center justify-between gap-2 animate-fade-in">
+        <div className="p-3 bg-[#090B0D] border border-[#252C2E] rounded-xl flex items-center justify-between gap-2">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-mono font-bold text-[#38BDF8]">DAY {selectedDay}</span>
+              <span className="text-xs font-mono font-bold text-[#69B39A]">DAY {selectedDay}</span>
               <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded border ${
                 student.proofs[selectedDay]?.shippedType === 'core'
-                  ? 'bg-[#8B5CF6]/20 border-[#8B5CF6]/50 text-[#A78BFA]'
+                  ? 'bg-[#191F21] border-[#69B39A] text-[#69B39A]'
                   : selectedDay < student.currentDay || !!student.proofs[selectedDay]?.shipped
-                  ? 'bg-[#0284C7]/20 border-[#38BDF8]/50 text-[#38BDF8]'
+                  ? 'bg-[#191F21] border-[#69B39A] text-[#69B39A]'
                   : selectedDay === student.currentDay
-                  ? 'bg-[#8B5CF6]/30 border-[#8B5CF6] text-white font-bold'
-                  : 'bg-[#0F172A] border-[#1E293B] text-[#64748B]'
+                  ? 'bg-[#69B39A] text-[#090B0D] font-bold'
+                  : 'bg-[#090B0D] border-[#252C2E] text-[#6F7575]'
               }`}>
                 {student.proofs[selectedDay]?.shippedType === 'core'
                   ? "CORE SHIPPED"
@@ -130,14 +124,14 @@ export const BuildJourney: React.FC<BuildJourneyProps> = ({ student }) => {
                   : "UPCOMING"}
               </span>
             </div>
-            <p className="font-bold text-xs text-white mt-1 truncate">
+            <p className="font-bold text-xs text-[#F1EEE7] mt-1 truncate">
               {CHALLENGES[selectedDay]?.title || `Challenge #${selectedDay}`}
             </p>
           </div>
 
           <Link
             to={`/day/${selectedDay}`}
-            className="shrink-0 px-3 py-1.5 rounded-lg bg-[#8B5CF6] hover:bg-[#7C3AED] text-white text-xs font-mono font-bold flex items-center gap-1 cursor-pointer transition-colors shadow-sm"
+            className="shrink-0 px-3 py-1.5 rounded-lg bg-[#69B39A] hover:bg-[#69B39A]/90 text-[#090B0D] text-xs font-mono font-bold flex items-center gap-1 cursor-pointer transition-colors"
           >
             <span>View</span>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -147,5 +141,3 @@ export const BuildJourney: React.FC<BuildJourneyProps> = ({ student }) => {
     </section>
   );
 };
-
-

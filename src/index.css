@@ -1,10 +1,27 @@
 @import "tailwindcss";
 
+@theme {
+  --color-bg-base: #090B0D;
+  --color-bg-sec: #0F1315;
+  --color-surface: #14191B;
+  --color-surface-elevated: #191F21;
+  --color-border-subtle: #252C2E;
+
+  --color-text-primary: #F1EEE7;
+  --color-text-secondary: #A6AAA8;
+  --color-text-muted: #6F7575;
+
+  --color-accent-teal: #69B39A;
+  --color-accent-amber: #C58A52;
+  --color-accent-steel: #718A96;
+  --color-accent-success: #6FA889;
+}
+
 @layer base {
   body {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: #050A18;
-    color: #F8FAFC;
+    background-color: #090B0D;
+    color: #F1EEE7;
     overflow-x: hidden;
   }
   
@@ -17,89 +34,65 @@
   }
 }
 
-/* Atmospheric Midnight Navy Backgrounds */
+/* Editorial & Engineering Palette Utilities */
 .bg-midnight-space {
-  background-color: #050A18;
-  background-image: 
-    radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.12) 0%, transparent 65%),
-    radial-gradient(circle at 85% 30%, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 15% 70%, rgba(249, 115, 22, 0.06) 0%, transparent 55%);
+  background-color: #090B0D;
 }
 
 .bg-card-midnight {
-  background: linear-gradient(180deg, rgba(15, 23, 42, 0.8) 0%, rgba(11, 18, 33, 0.95) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: #14191B;
+  border: 1px solid #252C2E;
 }
 
 .bg-card-hero {
-  background: linear-gradient(145deg, rgba(15, 23, 42, 0.95) 0%, rgba(10, 15, 30, 0.98) 100%);
-  border: 1px solid rgba(139, 92, 246, 0.35);
-  box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.25);
+  background-color: #14191B;
+  border: 1px solid #252C2E;
 }
 
-.bg-[#0B1225] {
-  background-color: #0B1225;
-}
-
-/* Custom animations & glow utilities */
+/* Custom animations & subtle pulse utilities */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes numberEntrance {
-  from { opacity: 0; transform: scale(0.96) translateY(4px); }
+  from { opacity: 0; transform: scale(0.98) translateY(2px); }
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-@keyframes orangePulse {
-  0%, 100% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 6px rgba(249, 115, 22, 0.6); }
-  50% { transform: scale(1.12); opacity: 1; box-shadow: 0 0 14px rgba(249, 115, 22, 0.9); }
+@keyframes amberPulse {
+  0%, 100% { transform: scale(1); opacity: 0.95; }
+  50% { transform: scale(1.04); opacity: 1; }
 }
 
-@keyframes violetPulse {
-  0%, 100% { opacity: 0.7; transform: scale(1); box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
-  50% { opacity: 1; transform: scale(1.05); box-shadow: 0 0 0 8px rgba(139, 92, 246, 0); }
-}
-
-@keyframes flowPulse {
-  0%, 100% { stroke-dashoffset: 0; opacity: 0.4; }
-  50% { stroke-dashoffset: -20; opacity: 1; }
+@keyframes tealPulse {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.03); }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-number-entrance {
-  animation: numberEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: numberEntrance 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.animate-orange-pulse {
-  animation: orangePulse 2.5s infinite ease-in-out;
+.animate-orange-pulse, .animate-amber-pulse {
+  animation: amberPulse 2.5s infinite ease-in-out;
 }
 
-.animate-violet-pulse {
-  animation: violetPulse 2.5s infinite ease-in-out;
-}
-
-.glow-violet {
-  box-shadow: 0 0 35px -5px rgba(139, 92, 246, 0.3);
-}
-
-.glow-violet-subtle {
-  box-shadow: 0 0 20px -5px rgba(139, 92, 246, 0.15);
-}
-
-.glow-cyan {
-  box-shadow: 0 0 20px -5px rgba(56, 189, 248, 0.25);
+.animate-violet-pulse, .animate-teal-pulse {
+  animation: tealPulse 2.5s infinite ease-in-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-in,
   .animate-number-entrance,
   .animate-orange-pulse,
-  .animate-violet-pulse {
+  .animate-amber-pulse,
+  .animate-violet-pulse,
+  .animate-teal-pulse {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
@@ -112,14 +105,14 @@
   height: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: #050A18;
+  background: #090B0D;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1E293B;
+  background: #252C2E;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #69B39A;
 }
 
 /* Hide scrollbar utility */
@@ -130,4 +123,5 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 

@@ -15,8 +15,7 @@ import {
   Code2, 
   Star, 
   ChevronRight, 
-  FileText, 
-  HelpCircle 
+  FileText
 } from 'lucide-react';
 import { ABMascot } from './ABMascot';
 
@@ -47,13 +46,11 @@ export const ABCoach: React.FC<ABCoachProps> = ({
   const autoNightShift = useNightShift();
   const isNightShift = isNightShiftProp !== undefined ? isNightShiftProp : autoNightShift;
 
-  // Extract current route day if on /day/:dayId
   const dayMatch = location.pathname.match(/\/day\/(\d+)/);
   const routeDay = dayMatch ? parseInt(dayMatch[1], 10) : student.currentDay || 12;
   const challenge: Challenge = CHALLENGES[routeDay] || CHALLENGES[12];
   const isShipped = !!student.proofs[routeDay]?.shipped;
 
-  // Coach UI States
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [dismissedStateKeys, setDismissedStateKeys] = useState<Record<string, boolean>>(() => {
@@ -65,13 +62,11 @@ export const ABCoach: React.FC<ABCoachProps> = ({
     }
   });
 
-  // Chat conversation state
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [hintStep, setHintStep] = useState(0);
   const chatBottomRef = useRef<HTMLDivElement>(null);
 
-  // Determine current Proactive Speech Bubble context based on state & route
   const getProactiveContext = () => {
     const isMissedDay = student.stateMode === 'missed_day';
 
@@ -141,7 +136,6 @@ export const ABCoach: React.FC<ABCoachProps> = ({
 
   const proactiveContext = getProactiveContext();
 
-  // Listen for global open-abcoach event
   useEffect(() => {
     const handleOpen = () => {
       setIsDrawerOpen(true);
@@ -151,7 +145,6 @@ export const ABCoach: React.FC<ABCoachProps> = ({
     return () => window.removeEventListener('open-abcoach', handleOpen);
   }, []);
 
-  // Show bubble proactively after brief delay if not dismissed for this stateKey
   useEffect(() => {
     if (!proactiveContext) return;
     const { key } = proactiveContext;
@@ -166,7 +159,6 @@ export const ABCoach: React.FC<ABCoachProps> = ({
     }
   }, [location.pathname, routeDay, isNightShift, isRescueMode, student.stateMode, isShipped]);
 
-  // Scroll to bottom of chat on new message
   useEffect(() => {
     if (isDrawerOpen) {
       chatBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -184,7 +176,6 @@ export const ABCoach: React.FC<ABCoachProps> = ({
     }
   };
 
-  // Initialize initial message when chat drawer opens for the first time
   useEffect(() => {
     if (isDrawerOpen && messages.length === 0) {
       setMessages([
@@ -204,7 +195,6 @@ export const ABCoach: React.FC<ABCoachProps> = ({
     }
   }, [isDrawerOpen]);
 
-  // Handle student sending text or clicking quick action
   const handleSendMessage = (customText?: string, actionKey?: string) => {
     const textToSend = (customText || inputValue).trim();
     if (!textToSend && !actionKey) return;
@@ -219,7 +209,6 @@ export const ABCoach: React.FC<ABCoachProps> = ({
     setMessages((prev) => [...prev, userMessage]);
     setInputValue('');
 
-    // Generate Contextual Coach Response
     setTimeout(() => {
       let replyText = '';
       let replyActions: { label: string; action: string; variant?: 'primary' | 'secondary' }[] = [];
@@ -280,7 +269,6 @@ export const ABCoach: React.FC<ABCoachProps> = ({
         setIsDrawerOpen(false);
         return;
       } else {
-        // Fallback natural language response
         replyText = `I hear you. For Day ${routeDay} (${challenge.title}), focus on getting the minimum working prototype. Ship the core requirement first, then test it locally.`;
         replyActions = [
           { label: 'Give me a hint', action: 'give_hint' },
@@ -304,19 +292,19 @@ export const ABCoach: React.FC<ABCoachProps> = ({
     <>
       {/* 1. PROACTIVE SPEECH BUBBLE OVERLAY */}
       {isBubbleVisible && proactiveContext && !isDrawerOpen && (
-        <div className="fixed bottom-16 sm:bottom-20 right-3 left-3 sm:left-auto sm:right-4 sm:max-w-xs z-40 animate-fade-in font-sans">
-          <div className="bg-[#0F172A] border border-[#8B5CF6]/50 rounded-2xl p-3.5 shadow-2xl relative overflow-hidden backdrop-blur-md">
+        <div className="fixed bottom-16 sm:bottom-20 right-3 left-3 sm:left-auto sm:right-4 sm:max-w-xs z-40 font-sans">
+          <div className="bg-[#14191B] border border-[#252C2E] rounded-xl p-3.5 relative overflow-hidden backdrop-blur-md">
             
             {/* Top Bar with Coach Badge & Dismiss X */}
-            <div className="flex items-center justify-between border-b border-[#1E293B] pb-2 mb-2">
+            <div className="flex items-center justify-between border-b border-[#252C2E] pb-2 mb-2">
               <div className="flex items-center gap-1.5">
-                <span className="w-5 h-5 rounded-lg bg-gradient-to-br from-[#8B5CF6] to-[#0284C7] flex items-center justify-center text-white text-[10px] font-black shadow-sm">
+                <span className="w-5 h-5 rounded-lg bg-[#69B39A] flex items-center justify-center text-[#090B0D] text-[10px] font-black">
                   ✦
                 </span>
-                <span className="text-[11px] font-black font-display text-white tracking-wider">
+                <span className="text-[11px] font-black font-display text-[#F1EEE7] tracking-wider">
                   AB COACH
                 </span>
-                <span className="text-[9px] font-mono text-[#38BDF8] bg-[#0284C7]/20 px-1.5 py-0.5 rounded border border-[#38BDF8]/30 font-bold uppercase">
+                <span className="text-[9px] font-mono text-[#69B39A] bg-[#191F21] px-1.5 py-0.5 rounded border border-[#252C2E] font-bold uppercase">
                   {proactiveContext.badge}
                 </span>
               </div>
@@ -324,7 +312,7 @@ export const ABCoach: React.FC<ABCoachProps> = ({
               <button
                 type="button"
                 onClick={() => dismissBubble(proactiveContext.key)}
-                className="p-1 rounded-lg text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors cursor-pointer"
+                className="p-1 rounded-lg text-[#A6AAA8] hover:text-[#F1EEE7] transition-colors cursor-pointer"
                 title="Dismiss message"
               >
                 <XIcon className="w-3.5 h-3.5" />
@@ -332,7 +320,7 @@ export const ABCoach: React.FC<ABCoachProps> = ({
             </div>
 
             {/* Message Body */}
-            <p className="text-xs text-[#CBD5E1] leading-relaxed font-sans whitespace-pre-line mb-3">
+            <p className="text-xs text-[#F1EEE7] leading-relaxed font-sans whitespace-pre-line mb-3">
               {proactiveContext.text}
             </p>
 
@@ -344,7 +332,7 @@ export const ABCoach: React.FC<ABCoachProps> = ({
                   dismissBubble(proactiveContext.key);
                   proactiveContext.primaryBtn.onClick();
                 }}
-                className="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#0284C7] hover:opacity-95 text-white font-bold text-[11px] uppercase tracking-wider transition-all shadow-md cursor-pointer flex items-center justify-center gap-1"
+                className="flex-1 py-2 px-3 rounded-xl bg-[#69B39A] text-[#090B0D] font-bold text-[11px] uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1"
               >
                 <span>{proactiveContext.primaryBtn.label}</span>
               </button>
@@ -353,7 +341,7 @@ export const ABCoach: React.FC<ABCoachProps> = ({
                 <button
                   type="button"
                   onClick={proactiveContext.secondaryBtn.onClick}
-                  className="py-2 px-2.5 rounded-xl bg-[#050A18] border border-[#1E293B] hover:border-[#38BDF8]/40 text-[#94A3B8] hover:text-white font-bold text-[10px] uppercase cursor-pointer"
+                  className="py-2 px-2.5 rounded-xl bg-[#090B0D] border border-[#252C2E] text-[#A6AAA8] hover:text-[#F1EEE7] font-bold text-[10px] uppercase cursor-pointer"
                 >
                   {proactiveContext.secondaryBtn.label}
                 </button>
@@ -363,7 +351,7 @@ export const ABCoach: React.FC<ABCoachProps> = ({
         </div>
       )}
 
-      {/* 2. FLOATING TRIGGER PILL (MINIMIZED BUTTON) */}
+      {/* 2. FLOATING TRIGGER PILL */}
       {!isDrawerOpen && (
         <button
           type="button"
@@ -371,38 +359,38 @@ export const ABCoach: React.FC<ABCoachProps> = ({
             setIsBubbleVisible(false);
             setIsDrawerOpen(true);
           }}
-          className="fixed bottom-16 sm:bottom-20 right-3 z-40 bg-gradient-to-r from-[#0F172A] to-[#1E1B4B] border border-[#8B5CF6]/60 hover:border-[#8B5CF6] text-white px-3 py-2 rounded-full shadow-xl flex items-center gap-2 group transition-all duration-300 cursor-pointer active:scale-95 font-sans"
+          className="fixed bottom-16 sm:bottom-20 right-3 z-40 bg-[#14191B] border border-[#252C2E] hover:border-[#69B39A] text-[#F1EEE7] px-3.5 py-2 rounded-full flex items-center gap-2 group transition-all duration-300 cursor-pointer active:scale-95 font-sans"
           title="Open AB Coach"
         >
-          <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#0284C7] flex items-center justify-center text-white text-[10px] font-black shadow-md animate-pulse">
+          <div className="w-5 h-5 rounded-full bg-[#69B39A] flex items-center justify-center text-[#090B0D] text-[10px] font-black">
             ✦
           </div>
-          <span className="text-xs font-bold font-mono tracking-wide text-white group-hover:text-[#38BDF8]">
+          <span className="text-xs font-bold font-mono tracking-wide text-[#F1EEE7] group-hover:text-[#69B39A]">
             AB COACH
           </span>
-          <span className="w-2 h-2 rounded-full bg-[#10B981] animate-ping" />
+          <span className="w-2 h-2 rounded-full bg-[#6FA889]" />
         </button>
       )}
 
       {/* 3. COMPACT BOTTOM-SHEET CHAT DRAWER */}
       {isDrawerOpen && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-sm animate-fade-in font-sans">
-          <div className="bg-[#050A18] border-t border-x border-[#1E293B] rounded-t-2xl w-full max-w-[390px] h-[82vh] flex flex-col shadow-2xl relative overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-[#090B0D]/80 backdrop-blur-sm font-sans">
+          <div className="bg-[#090B0D] border-t border-x border-[#252C2E] rounded-t-xl w-full max-w-[390px] h-[82vh] flex flex-col relative overflow-hidden">
             
             {/* Drawer Header */}
-            <div className="p-3 bg-[#0B1220] border-b border-[#1E293B] flex items-center justify-between shrink-0">
+            <div className="p-3 bg-[#111A22] border-b border-[#252C2E] flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#1E1B4B] to-[#0284C7]/30 border border-[#38BDF8]/40 flex items-center justify-center text-[#38BDF8] shadow-md">
-                  <SparklesIcon className="w-4 h-4 text-[#38BDF8]" />
+                <div className="w-9 h-9 rounded-xl bg-[#14191B] border border-[#252C2E] flex items-center justify-center text-[#69B39A]">
+                  <SparklesIcon className="w-4 h-4 text-[#69B39A]" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-black font-display text-white uppercase tracking-wider flex items-center gap-2">
+                  <h3 className="text-sm font-black font-display text-[#F1EEE7] uppercase tracking-wider flex items-center gap-2">
                     <span>AB COACH</span>
-                    <span className="text-[10px] font-mono text-[#10B981] bg-[#064E3B]/80 border border-[#10B981]/40 px-2 py-0.5 rounded font-bold uppercase tracking-wider">
+                    <span className="text-[10px] font-mono text-[#6FA889] bg-[#191F21] border border-[#252C2E] px-2 py-0.5 rounded font-bold uppercase tracking-wider">
                       ONLINE
                     </span>
                   </h3>
-                  <p className="text-xs text-[#94A3B8] font-mono">
+                  <p className="text-xs text-[#A6AAA8] font-mono">
                     Your build companion • Day {routeDay}
                   </p>
                 </div>
@@ -411,7 +399,7 @@ export const ABCoach: React.FC<ABCoachProps> = ({
               <button
                 type="button"
                 onClick={() => setIsDrawerOpen(false)}
-                className="w-8 h-8 rounded-full bg-[#0F172A] border border-[#1E293B] hover:border-[#38BDF8]/40 text-[#94A3B8] hover:text-white flex items-center justify-center cursor-pointer transition-colors"
+                className="w-8 h-8 rounded-full bg-[#14191B] border border-[#252C2E] hover:border-[#69B39A] text-[#A6AAA8] hover:text-[#F1EEE7] flex items-center justify-center cursor-pointer transition-colors"
               >
                 <XIcon className="w-4 h-4" />
               </button>
@@ -421,106 +409,101 @@ export const ABCoach: React.FC<ABCoachProps> = ({
             <div className="flex-1 p-3.5 overflow-y-auto space-y-4 font-sans text-xs scrollbar-none">
               
               {/* HERO COACH CARD WITH MASCOT */}
-              <div className="bg-[#0B1220]/90 border border-[#1E293B] rounded-2xl p-4 relative overflow-hidden shadow-xl flex items-center justify-between gap-3">
+              <div className="bg-[#14191B] border border-[#252C2E] rounded-xl p-4 relative overflow-hidden flex items-center justify-between gap-3">
                 <div className="space-y-2 min-w-0 flex-1">
-                  <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#38BDF8]">
-                    <SparklesIcon className="w-3.5 h-3.5 text-[#38BDF8]" />
+                  <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#69B39A]">
+                    <SparklesIcon className="w-3.5 h-3.5 text-[#69B39A]" />
                     <span>AB COACH</span>
                   </div>
-                  <p className="text-xs text-white leading-relaxed font-sans font-medium">
-                    Hey <span className="font-bold">{student.name || 'Bharath'}</span>, I'm AB Coach. I'm tracking your Day {routeDay} build ({challenge.title}).
+                  <p className="text-xs text-[#F1EEE7] leading-relaxed font-sans font-medium">
+                    Hey <span className="font-bold text-[#F1EEE7]">{student.name || 'Bharath'}</span>, I'm AB Coach. I'm tracking your Day {routeDay} build ({challenge.title}).
                   </p>
-                  <p className="text-xs text-[#94A3B8] font-sans">
+                  <p className="text-xs text-[#A6AAA8] font-sans">
                     How can I help you get this shipped tonight?
                   </p>
                 </div>
 
-                {/* Robot Mascot */}
                 <div className="shrink-0 relative">
-                  <ABMascot size={80} className="shadow-2xl shadow-[#8B5CF6]/30" />
+                  <ABMascot size={64} />
                 </div>
               </div>
 
               {/* SUGGESTED ACTIONS SECTION */}
               <div className="space-y-2.5">
-                <div className="flex items-center gap-2 text-[10px] font-mono font-bold text-[#38BDF8] uppercase tracking-widest">
+                <div className="flex items-center gap-2 text-[10px] font-mono font-bold text-[#69B39A] uppercase tracking-widest">
                   <span className="shrink-0">SUGGESTED ACTIONS</span>
-                  <span className="h-px bg-[#1E293B] flex-1" />
+                  <span className="h-px bg-[#252C2E] flex-1" />
                 </div>
 
                 {/* 2x2 Grid of Actions */}
                 <div className="grid grid-cols-2 gap-2 font-sans">
-                  {/* Action 1: Explain today's task */}
                   <button
                     type="button"
                     onClick={() => handleSendMessage('', 'explain_task')}
-                    className="p-3 rounded-2xl bg-[#0B1220]/90 border border-[#1E293B] hover:border-[#8B5CF6]/60 text-left transition-all cursor-pointer group space-y-1.5 shadow-md active:scale-95"
+                    className="p-3 rounded-xl bg-[#14191B] border border-[#252C2E] hover:border-[#69B39A] text-left transition-all cursor-pointer group space-y-1.5 active:scale-95"
                   >
-                    <div className="w-7 h-7 rounded-xl bg-[#2E1065] border border-[#8B5CF6]/50 flex items-center justify-center text-[#A78BFA]">
-                      <Lightbulb className="w-4 h-4 text-[#A78BFA]" />
+                    <div className="w-7 h-7 rounded-lg bg-[#111A22] border border-[#252C2E] flex items-center justify-center text-[#69B39A]">
+                      <Lightbulb className="w-4 h-4 text-[#69B39A]" />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-white group-hover:text-[#38BDF8] transition-colors leading-tight">
+                      <div className="text-xs font-bold text-[#F1EEE7] group-hover:text-[#69B39A] transition-colors leading-tight">
                         Explain today's task
                       </div>
-                      <div className="text-[10px] text-[#94A3B8] font-sans">
+                      <div className="text-[10px] text-[#A6AAA8] font-sans">
                         Break it down
                       </div>
                     </div>
                   </button>
 
-                  {/* Action 2: Give me a hint */}
                   <button
                     type="button"
                     onClick={() => handleSendMessage('', 'give_hint')}
-                    className="p-3 rounded-2xl bg-[#0B1220]/90 border border-[#1E293B] hover:border-[#F59E0B]/60 text-left transition-all cursor-pointer group space-y-1.5 shadow-md active:scale-95"
+                    className="p-3 rounded-xl bg-[#14191B] border border-[#252C2E] hover:border-[#C58A52] text-left transition-all cursor-pointer group space-y-1.5 active:scale-95"
                   >
-                    <div className="w-7 h-7 rounded-xl bg-[#451A03] border border-[#F59E0B]/50 flex items-center justify-center text-[#FBBF24]">
-                      <ZapIcon className="w-4 h-4 text-[#FBBF24]" />
+                    <div className="w-7 h-7 rounded-lg bg-[#111A22] border border-[#252C2E] flex items-center justify-center text-[#C58A52]">
+                      <ZapIcon className="w-4 h-4 text-[#C58A52]" />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-white group-hover:text-[#FBBF24] transition-colors leading-tight">
+                      <div className="text-xs font-bold text-[#F1EEE7] group-hover:text-[#C58A52] transition-colors leading-tight">
                         Give me a hint
                       </div>
-                      <div className="text-[10px] text-[#94A3B8] font-sans">
+                      <div className="text-[10px] text-[#A6AAA8] font-sans">
                         Nudge in right direction
                       </div>
                     </div>
                   </button>
 
-                  {/* Action 3: I'm stuck */}
                   <button
                     type="button"
                     onClick={() => handleSendMessage('', 'im_stuck')}
-                    className="p-3 rounded-2xl bg-[#0B1220]/90 border border-[#1E293B] hover:border-[#EF4444]/60 text-left transition-all cursor-pointer group space-y-1.5 shadow-md active:scale-95"
+                    className="p-3 rounded-xl bg-[#14191B] border border-[#252C2E] hover:border-[#C58A52] text-left transition-all cursor-pointer group space-y-1.5 active:scale-95"
                   >
-                    <div className="w-7 h-7 rounded-xl bg-[#450A0A] border border-[#EF4444]/50 flex items-center justify-center text-[#FCA5A5]">
-                      <AlertTriangle className="w-4 h-4 text-[#FCA5A5]" />
+                    <div className="w-7 h-7 rounded-lg bg-[#111A22] border border-[#252C2E] flex items-center justify-center text-[#C58A52]">
+                      <AlertTriangle className="w-4 h-4 text-[#C58A52]" />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-white group-hover:text-[#EF4444] transition-colors leading-tight">
+                      <div className="text-xs font-bold text-[#F1EEE7] group-hover:text-[#C58A52] transition-colors leading-tight">
                         I'm stuck
                       </div>
-                      <div className="text-[10px] text-[#94A3B8] font-sans">
+                      <div className="text-[10px] text-[#A6AAA8] font-sans">
                         Help me unblock
                       </div>
                     </div>
                   </button>
 
-                  {/* Action 4: Check my approach */}
                   <button
                     type="button"
                     onClick={() => handleSendMessage('', 'check_approach')}
-                    className="p-3 rounded-2xl bg-[#0B1220]/90 border border-[#1E293B] hover:border-[#0284C7]/60 text-left transition-all cursor-pointer group space-y-1.5 shadow-md active:scale-95"
+                    className="p-3 rounded-xl bg-[#14191B] border border-[#252C2E] hover:border-[#718A96] text-left transition-all cursor-pointer group space-y-1.5 active:scale-95"
                   >
-                    <div className="w-7 h-7 rounded-xl bg-[#0C4A6E] border border-[#38BDF8]/50 flex items-center justify-center text-[#38BDF8]">
-                      <Target className="w-4 h-4 text-[#38BDF8]" />
+                    <div className="w-7 h-7 rounded-lg bg-[#111A22] border border-[#252C2E] flex items-center justify-center text-[#718A96]">
+                      <Target className="w-4 h-4 text-[#718A96]" />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-white group-hover:text-[#38BDF8] transition-colors leading-tight">
+                      <div className="text-xs font-bold text-[#F1EEE7] group-hover:text-[#718A96] transition-colors leading-tight">
                         Check my approach
                       </div>
-                      <div className="text-[10px] text-[#94A3B8] font-sans">
+                      <div className="text-[10px] text-[#A6AAA8] font-sans">
                         Review my plan
                       </div>
                     </div>
@@ -530,82 +513,78 @@ export const ABCoach: React.FC<ABCoachProps> = ({
 
               {/* TODAY'S CONTEXT SECTION */}
               <div className="space-y-2.5">
-                <div className="flex items-center gap-2 text-[10px] font-mono font-bold text-[#38BDF8] uppercase tracking-widest">
+                <div className="flex items-center gap-2 text-[10px] font-mono font-bold text-[#69B39A] uppercase tracking-widest">
                   <span className="shrink-0">TODAY'S CONTEXT</span>
-                  <span className="h-px bg-[#1E293B] flex-1" />
+                  <span className="h-px bg-[#252C2E] flex-1" />
                 </div>
 
-                {/* Current Build & Focus Time Card */}
-                <div className="bg-[#0B1220]/90 border border-[#1E293B] rounded-2xl p-3.5 flex items-center justify-between text-xs shadow-md">
+                <div className="bg-[#14191B] border border-[#252C2E] rounded-xl p-3.5 flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-[#1E1B4B] border border-[#8B5CF6]/40 flex items-center justify-center text-[#8B5CF6]">
+                    <div className="w-8 h-8 rounded-lg bg-[#111A22] border border-[#252C2E] flex items-center justify-center text-[#69B39A]">
                       <Code2 className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-[10px] font-mono text-[#94A3B8]">Current Build</div>
-                      <div className="font-bold text-white">{challenge.title}</div>
+                      <div className="text-[10px] font-mono text-[#A6AAA8]">Current Build</div>
+                      <div className="font-bold text-[#F1EEE7]">{challenge.title}</div>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-xl bg-[#0369A1]/30 border border-[#38BDF8]/40 flex items-center justify-center text-[#38BDF8]">
+                    <div className="w-8 h-8 rounded-lg bg-[#111A22] border border-[#252C2E] flex items-center justify-center text-[#718A96]">
                       <Clock className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-[10px] font-mono text-[#94A3B8]">Time Focus</div>
-                      <div className="font-bold text-white">{challenge.durationMinutes || 35} min session</div>
+                      <div className="text-[10px] font-mono text-[#A6AAA8]">Time Focus</div>
+                      <div className="font-bold text-[#F1EEE7]">{challenge.durationMinutes || 35} min session</div>
                     </div>
                   </div>
                 </div>
 
-                {/* Day Progress Card */}
-                <div className="bg-[#0B1220]/90 border border-[#1E293B] rounded-2xl p-3.5 space-y-2 shadow-md">
+                <div className="bg-[#14191B] border border-[#252C2E] rounded-xl p-3.5 space-y-2">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-bold text-white font-mono">Day {routeDay} Progress</span>
-                    <span className="text-[10px] font-mono text-[#94A3B8]">2 / 3 tasks completed</span>
-                    <span className="font-mono font-bold text-[#8B5CF6]">66%</span>
+                    <span className="font-bold text-[#F1EEE7] font-mono">Day {routeDay} Progress</span>
+                    <span className="text-[10px] font-mono text-[#A6AAA8]">2 / 3 tasks completed</span>
+                    <span className="font-mono font-bold text-[#69B39A]">66%</span>
                   </div>
 
-                  {/* Progress bar */}
-                  <div className="w-full h-2 bg-[#050A18] rounded-full overflow-hidden border border-[#1E293B]">
-                    <div className="h-full bg-gradient-to-r from-[#8B5CF6] via-[#2563EB] to-[#38BDF8] rounded-full w-[66%]" />
+                  <div className="w-full h-2 bg-[#090B0D] rounded-full overflow-hidden border border-[#252C2E]">
+                    <div className="h-full bg-[#69B39A] rounded-full w-[66%]" />
                   </div>
                 </div>
 
-                {/* PRO TIP Card */}
-                <div className="bg-[#0B1220]/90 border border-[#1E293B] rounded-2xl p-3 flex items-center justify-between gap-3 shadow-md hover:border-[#8B5CF6]/50 transition-colors cursor-pointer group">
+                <div className="bg-[#14191B] border border-[#252C2E] rounded-xl p-3 flex items-center justify-between gap-3 hover:border-[#69B39A] transition-colors cursor-pointer group">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-xl bg-[#1E1B4B] border border-[#8B5CF6]/40 flex items-center justify-center text-[#FBBF24] shrink-0">
-                      <Star className="w-4 h-4 text-[#FBBF24] fill-[#FBBF24]" />
+                    <div className="w-8 h-8 rounded-lg bg-[#111A22] border border-[#252C2E] flex items-center justify-center text-[#C58A52] shrink-0">
+                      <Star className="w-4 h-4 text-[#C58A52] fill-[#C58A52]" />
                     </div>
                     <div>
-                      <div className="text-[10px] font-mono font-bold text-[#8B5CF6] uppercase">PRO TIP</div>
-                      <div className="text-xs text-[#CBD5E1] font-sans">
-                        Focus on implementing cosine similarity first. It's the core of today's build.
+                      <div className="text-[10px] font-mono font-bold text-[#C58A52] uppercase">PRO TIP</div>
+                      <div className="text-xs text-[#F1EEE7] font-sans">
+                        Focus on implementing core routing first. It's the core of today's build.
                       </div>
                     </div>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-[#64748B] group-hover:text-white shrink-0 transition-colors" />
+                  <ChevronRight className="w-4 h-4 text-[#A6AAA8] group-hover:text-[#F1EEE7] shrink-0 transition-colors" />
                 </div>
               </div>
 
               {/* CHAT MESSAGES IF ANY */}
               {messages.length > 1 && (
-                <div className="space-y-3 pt-2 border-t border-[#1E293B]">
+                <div className="space-y-3 pt-2 border-t border-[#252C2E]">
                   {messages.slice(1).map((msg) => (
                     <div
                       key={msg.id}
                       className={`flex flex-col ${msg.sender === 'student' ? 'items-end' : 'items-start'} space-y-1`}
                     >
                       <div
-                        className={`p-3 rounded-2xl max-w-[88%] leading-relaxed ${
+                        className={`p-3 rounded-xl max-w-[88%] leading-relaxed ${
                           msg.sender === 'student'
-                            ? 'bg-[#8B5CF6] text-white rounded-br-xs shadow-md font-sans'
-                            : 'bg-[#0B1220] border border-[#1E293B] text-[#CBD5E1] rounded-bl-xs font-sans whitespace-pre-line'
+                            ? 'bg-[#69B39A] text-[#090B0D] font-semibold font-sans'
+                            : 'bg-[#14191B] border border-[#252C2E] text-[#F1EEE7] font-sans whitespace-pre-line'
                         }`}
                       >
                         {msg.sender === 'coach' && (
-                          <div className="text-[9px] font-mono font-bold text-[#38BDF8] uppercase mb-1 flex items-center gap-1">
+                          <div className="text-[9px] font-mono font-bold text-[#69B39A] uppercase mb-1 flex items-center gap-1">
                             <span>✦ AB COACH</span>
                           </div>
                         )}
@@ -621,8 +600,8 @@ export const ABCoach: React.FC<ABCoachProps> = ({
                               onClick={() => handleSendMessage('', act.action)}
                               className={`text-[10px] font-bold px-2.5 py-1.5 rounded-xl border transition-all cursor-pointer ${
                                 act.variant === 'primary'
-                                  ? 'bg-[#0284C7]/20 border-[#38BDF8] text-[#38BDF8] hover:bg-[#0284C7]/40'
-                                  : 'bg-[#050A18] border-[#1E293B] text-[#A78BFA] hover:border-[#8B5CF6]/50 hover:text-white'
+                                  ? 'bg-[#69B39A] text-[#090B0D] border-[#69B39A]'
+                                  : 'bg-[#111A22] border-[#252C2E] text-[#F1EEE7] hover:border-[#69B39A]'
                               }`}
                             >
                               {act.label}
@@ -631,7 +610,7 @@ export const ABCoach: React.FC<ABCoachProps> = ({
                         </div>
                       )}
 
-                      <span className="text-[8px] font-mono text-[#64748B] px-1">
+                      <span className="text-[8px] font-mono text-[#A6AAA8] px-1">
                         {msg.timestamp}
                       </span>
                     </div>
@@ -643,40 +622,40 @@ export const ABCoach: React.FC<ABCoachProps> = ({
             </div>
 
             {/* QUICK ACTION BUTTONS BAR */}
-            <div className="p-2 bg-[#0B1220] border-t border-[#1E293B] overflow-x-auto flex gap-1.5 shrink-0 scrollbar-none font-mono">
+            <div className="p-2 bg-[#111A22] border-t border-[#252C2E] overflow-x-auto flex gap-1.5 shrink-0 scrollbar-none font-mono">
               <button
                 type="button"
                 onClick={() => handleSendMessage('', 'explain_task')}
-                className="text-[10px] font-bold text-[#CBD5E1] bg-[#050A18] border border-[#1E293B] hover:border-[#38BDF8]/50 px-3 py-1.5 rounded-xl shrink-0 cursor-pointer flex items-center gap-1.5"
+                className="text-[10px] font-bold text-[#F1EEE7] bg-[#14191B] border border-[#252C2E] hover:border-[#69B39A] px-3 py-1.5 rounded-xl shrink-0 cursor-pointer flex items-center gap-1.5"
               >
-                <FileText className="w-3 h-3 text-[#38BDF8]" />
+                <FileText className="w-3 h-3 text-[#69B39A]" />
                 <span>Explain task</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => handleSendMessage('', 'give_hint')}
-                className="text-[10px] font-bold text-[#CBD5E1] bg-[#050A18] border border-[#1E293B] hover:border-[#FBBF24]/50 px-3 py-1.5 rounded-xl shrink-0 cursor-pointer flex items-center gap-1.5"
+                className="text-[10px] font-bold text-[#F1EEE7] bg-[#14191B] border border-[#252C2E] hover:border-[#C58A52] px-3 py-1.5 rounded-xl shrink-0 cursor-pointer flex items-center gap-1.5"
               >
-                <ZapIcon className="w-3 h-3 text-[#FBBF24]" />
+                <ZapIcon className="w-3 h-3 text-[#C58A52]" />
                 <span>Hint</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => handleSendMessage('', 'im_stuck')}
-                className="text-[10px] font-bold text-[#CBD5E1] bg-[#050A18] border border-[#1E293B] hover:border-[#EF4444]/50 px-3 py-1.5 rounded-xl shrink-0 cursor-pointer flex items-center gap-1.5"
+                className="text-[10px] font-bold text-[#F1EEE7] bg-[#14191B] border border-[#252C2E] hover:border-[#C58A52] px-3 py-1.5 rounded-xl shrink-0 cursor-pointer flex items-center gap-1.5"
               >
-                <AlertTriangle className="w-3 h-3 text-[#EF4444]" />
+                <AlertTriangle className="w-3 h-3 text-[#C58A52]" />
                 <span>I'm stuck</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => handleSendMessage('', 'check_approach')}
-                className="text-[10px] font-bold text-[#CBD5E1] bg-[#050A18] border border-[#1E293B] hover:border-[#38BDF8]/50 px-3 py-1.5 rounded-xl shrink-0 cursor-pointer flex items-center gap-1.5"
+                className="text-[10px] font-bold text-[#F1EEE7] bg-[#14191B] border border-[#252C2E] hover:border-[#718A96] px-3 py-1.5 rounded-xl shrink-0 cursor-pointer flex items-center gap-1.5"
               >
-                <Target className="w-3 h-3 text-[#38BDF8]" />
+                <Target className="w-3 h-3 text-[#718A96]" />
                 <span>Check</span>
               </button>
             </div>
@@ -687,21 +666,21 @@ export const ABCoach: React.FC<ABCoachProps> = ({
                 e.preventDefault();
                 handleSendMessage();
               }}
-              className="p-3 bg-[#050A18] border-t border-[#1E293B] flex items-center gap-2 shrink-0"
+              className="p-3 bg-[#090B0D] border-t border-[#252C2E] flex items-center gap-2 shrink-0"
             >
               <input
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder={`Ask AB Coach about Day ${routeDay}...`}
-                className="flex-1 bg-[#0B1220] border border-[#1E293B] focus:border-[#8B5CF6] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-[#64748B] focus:outline-none font-mono"
+                className="flex-1 bg-[#111A22] border border-[#252C2E] focus:border-[#69B39A] rounded-xl px-3.5 py-2.5 text-xs text-[#F1EEE7] placeholder-[#A6AAA8] focus:outline-none font-mono"
               />
 
               <button
                 type="submit"
-                className="w-10 h-10 rounded-full bg-gradient-to-r from-[#8B5CF6] via-[#2563EB] to-[#0284C7] flex items-center justify-center text-white shadow-lg shadow-[#8B5CF6]/30 cursor-pointer hover:opacity-95 shrink-0 transition-transform active:scale-95"
+                className="w-10 h-10 rounded-full bg-[#69B39A] flex items-center justify-center text-[#090B0D] cursor-pointer hover:bg-[#69B39A]/90 shrink-0 transition-transform active:scale-95"
               >
-                <SendIcon className="w-4 h-4 text-white" />
+                <SendIcon className="w-4 h-4 text-[#090B0D]" />
               </button>
             </form>
 
@@ -711,3 +690,4 @@ export const ABCoach: React.FC<ABCoachProps> = ({
     </>
   );
 };
+

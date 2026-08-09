@@ -192,15 +192,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ student, onStudent
 
       {/* DISCREET DEMO STATE CONTROLLER FOR HACKATHON EVALUATION */}
       <motion.div variants={itemVariants} className="pt-2">
-        <div className="bg-[#050A18] border border-[#1E293B] rounded-xl p-2.5 shadow-inner">
-          <div className="flex items-center justify-between text-[11px] text-[#94A3B8] mb-2 font-mono">
-            <div className="flex items-center gap-1.5 font-bold text-white uppercase">
-              <Sliders className="w-3.5 h-3.5 text-[#38BDF8]" />
+        <div className="bg-[#090B0D] border border-[#252C2E] rounded-xl p-2.5">
+          <div className="flex items-center justify-between text-[11px] text-[#A6AAA8] mb-2 font-mono">
+            <div className="flex items-center gap-1.5 font-bold text-[#F1EEE7] uppercase">
+              <Sliders className="w-3.5 h-3.5 text-[#69B39A]" />
               <span>Demo State Switcher</span>
             </div>
             <button
               onClick={() => setShowDemoBar(!showDemoBar)}
-              className="text-[10px] text-[#38BDF8] hover:text-white underline cursor-pointer uppercase"
+              className="text-[10px] text-[#69B39A] hover:text-[#F1EEE7] underline cursor-pointer uppercase"
             >
               {showDemoBar ? 'Hide' : 'Test states'}
             </button>
@@ -212,8 +212,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ student, onStudent
                 onClick={() => setDemoState('normal')}
                 className={`px-2 py-1.5 rounded-lg border text-center font-bold transition-all cursor-pointer ${
                   demoState === 'normal'
-                    ? 'bg-[#8B5CF6]/30 border-[#8B5CF6] text-white shadow-sm'
-                    : 'bg-[#0F172A] border-[#1E293B] text-[#94A3B8] hover:text-white'
+                    ? 'bg-[#191F21] border-[#69B39A] text-[#F1EEE7]'
+                    : 'bg-[#14191B] border-[#252C2E] text-[#A6AAA8] hover:text-[#F1EEE7]'
                 }`}
               >
                 Normal
@@ -223,8 +223,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ student, onStudent
                 onClick={() => setDemoState('night_shift')}
                 className={`px-2 py-1.5 rounded-lg border text-center font-bold transition-all cursor-pointer ${
                   demoState === 'night_shift'
-                    ? 'bg-[#8B5CF6]/30 border-[#8B5CF6] text-white shadow-sm'
-                    : 'bg-[#0F172A] border-[#1E293B] text-[#94A3B8] hover:text-white'
+                    ? 'bg-[#191F21] border-[#69B39A] text-[#F1EEE7]'
+                    : 'bg-[#14191B] border-[#252C2E] text-[#A6AAA8] hover:text-[#F1EEE7]'
                 }`}
               >
                 Night Shift
@@ -234,8 +234,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ student, onStudent
                 onClick={() => setDemoState('build_rescue')}
                 className={`px-2 py-1.5 rounded-lg border text-center font-bold transition-all cursor-pointer ${
                   demoState === 'build_rescue'
-                    ? 'bg-[#F97316]/30 border-[#F97316] text-[#F97316] shadow-sm'
-                    : 'bg-[#0F172A] border-[#1E293B] text-[#94A3B8] hover:text-white'
+                    ? 'bg-[#191F21] border-[#C58A52] text-[#C58A52]'
+                    : 'bg-[#14191B] border-[#252C2E] text-[#A6AAA8] hover:text-[#F1EEE7]'
                 }`}
               >
                 Rescue
@@ -245,8 +245,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ student, onStudent
                 onClick={() => setDemoState('missed_day')}
                 className={`px-2 py-1.5 rounded-lg border text-center font-bold transition-all cursor-pointer ${
                   demoState === 'missed_day'
-                    ? 'bg-[#F97316]/30 border-[#F97316] text-[#F97316] shadow-sm'
-                    : 'bg-[#0F172A] border-[#1E293B] text-[#94A3B8] hover:text-white'
+                    ? 'bg-[#191F21] border-[#C58A52] text-[#C58A52]'
+                    : 'bg-[#14191B] border-[#252C2E] text-[#A6AAA8] hover:text-[#F1EEE7]'
                 }`}
               >
                 Missed Day
@@ -256,8 +256,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ student, onStudent
                 onClick={() => setDemoState('completed')}
                 className={`px-2 py-1.5 rounded-lg border text-center font-bold transition-all cursor-pointer ${
                   demoState === 'completed'
-                    ? 'bg-[#8B5CF6]/30 border-[#8B5CF6] text-white shadow-sm'
-                    : 'bg-[#0F172A] border-[#1E293B] text-[#94A3B8] hover:text-white'
+                    ? 'bg-[#191F21] border-[#69B39A] text-[#F1EEE7]'
+                    : 'bg-[#14191B] border-[#252C2E] text-[#A6AAA8] hover:text-[#F1EEE7]'
                 }`}
               >
                 Legend 60
@@ -267,8 +267,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ student, onStudent
                 onClick={() => setDemoState('auto')}
                 className={`px-2 py-1.5 rounded-lg border text-center font-bold transition-all cursor-pointer ${
                   demoState === 'auto'
-                    ? 'bg-[#0284C7]/30 border-[#38BDF8] text-white shadow-sm'
-                    : 'bg-[#0F172A] border-[#1E293B] text-[#64748B]'
+                    ? 'bg-[#191F21] border-[#718A96] text-[#F1EEE7]'
+                    : 'bg-[#14191B] border-[#252C2E] text-[#A6AAA8]'
                 }`}
               >
                 Auto (Time)
