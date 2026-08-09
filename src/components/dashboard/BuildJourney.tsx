@@ -5,7 +5,7 @@ import { StudentProfile } from '../../types';
 import { CHALLENGES } from '../../data/challenges';
 
 interface BuildJourneyProps {
-  student: StudentProfile;
+  student: StudentProfile; 
 }
 
 export const BuildJourney: React.FC<BuildJourneyProps> = ({ student }) => {
